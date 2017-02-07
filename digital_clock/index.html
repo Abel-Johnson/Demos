@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box {
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+			#box div{
+				position: relative;
+				width: 50px;
+				height: 70px;
+				display: inline-block;
+				overflow: hidden;
+			}
+			#box li {
+				position: absolute;
+				width: 50px;
+				height: 70px;
+				/*overflow: hidden;*/
+			}
+			
+			#box li img {
+				vertical-align: top;
+			}
+		</style>
+	</head>
+
+	<body>
+		<ul id="box">
+			<div><li>
+							<img src="img/0.jpg" alt="" />
+							<img src="img/1.jpg" alt="" />
+						</li></div>
+			<div><li>
+							<img src="img/0.jpg" alt="" />
+							<img src="img/1.jpg" alt="" />
+						</li></div>
+			
+			<div>
+				<li>
+				<img src="img/c.jpg" alt="" />
+			</li>
+			</div>
+			<div><li>
+							<img src="img/0.jpg" alt="" />
+							<img src="img/1.jpg" alt="" />
+						</li></div>
+			<div><li>
+							<img src="img/0.jpg" alt="" />
+							<img src="img/1.jpg" alt="" />
+						</li></div>
+			
+			<div>
+				<li>
+				<img src="img/c.jpg" alt="" />
+			</li>
+			</div>
+			<div><li>
+							<img src="img/0.jpg" alt="" />
+							<img src="img/1.jpg" alt="" />
+						</li></div>
+			<div><li>
+							<img src="img/0.jpg" alt="" />
+							<img src="img/1.jpg" alt="" />
+						</li></div>
+			
+		</ul>
+
+		<script src="move.js"></script>
+		<script type="text/javascript">
+			var lis = document.getElementsByTagName("li");
+			var divs = document.getElementsByTagName("div");
+//			for(var i = 0; i < divs.length; i++) {
+//				divs[i].style.left = i * 58 + "px";
+//			}
+			var now = new Date();
+			var h = add0(now.getHours());
+			var m = add0(now.getMinutes());
+			var s = add0(now.getSeconds());
+			var differ = [];
+
+			var tStr1 = h + ":" + m + ":" + s;//获取到一打开网页时的时间字符串
+			for(var i = 0; i < tStr1.length; i++) {
+				lis[i].getElementsByTagName("img")[0].src = i == 2 || i == 5 ? "img/c.jpg" : "img/" + tStr1[i] + ".jpg"
+			}
+			setInterval( normalTab,1000 )
+			//给传入的1位正整数num加0
+			function add0(num) {
+				if(num < 10) {
+					return "0" + num;
+				} else {
+					return num;
+				}
+			}
+			
+			//找出两个字符串的不同位的索引以及对应的值
+			function getDiffer(a, b) {
+				var differ = [];
+				for(var i = 0; i < a.length; i++) {
+					if(a[i] !== b[i]) {
+						differ.push([i, b[i]])
+					}
+				}
+				return differ;
+			}
+			
+			//			console.log(getDiffer("abcd","cccc"));;
+
+			function normalTab() {
+				var now = new Date();
+				var h = add0(now.getHours());
+				var m = add0(now.getMinutes());
+				var s = add0(now.getSeconds());
+				var tStr2 = h + ":" + m + ":" + s;
+
+				var tabsrc = getDiffer(tStr1, tStr2);
+				console.log(tStr1, tStr2);
+				console.log(tabsrc);
+				for(var i = 0; i < tabsrc.length; i++) {
+					var a = tabsrc[i][0];
+					var b = tabsrc[i][1];
+					tab(a, b);
+				}
+				tStr1 = tStr2;
+			}
+
+			
+
+			function tab(a, b) {
+				lis[a].getElementsByTagName("img")[1].src = "img/" + b + ".jpg";
+				move(lis[a], {
+					top: -70
+				}, 500, function() {
+					lis[a].getElementsByTagName("img")[0].src = "img/" + b + ".jpg"
+						//				alert(3)
+					lis[a].style.top = "0px"
+						//					tStr1 = tStr2
+				})
+
+				//				lis[a].style.top = "-70px"
+				//				alert(2)
+
+			}
+			//函数功能根据传入的 要改的字的索引值 和 目的值 做出修改
+			//				var now = new Date();
+			//				var h = add0(now.getHours());
+			//				var m = add0(now.getMinutes());
+			//				var s = add0(now.getSeconds());
+			//
+			//				var tStr = h + ":" + m + ":" + s;
+			//				console.log(tStr);
+			////				var nowIndex = tStr[a];//
+
+			//			console.log(tStr);
+
+			//				for(var i = 0; i < tStr.length; i++) {
+			//					imgs[i].src = i == 2 || i == 5 ? "img/c.jpg" : "img/" + tStr[i] + ".jpg"
+			//				}
+		</script>
+
+		<!--<img src="img/0.jpg" alt="" />-->
+		<!--<img src="img/0.jpg" alt="" />
+		<img src="img/0.jpg" alt="" />
+		<img src="img/c.jpg" alt="" />
+		<img src="img/0.jpg" alt="" />
+		<img src="img/0.jpg" alt="" />
+		<img src="img/c.jpg" alt="" />
+		<img src="img/0.jpg" alt="" />
+		<img src="img/0.jpg" alt="" />-->
+
+		<!--<script type="text/javascript">
+			//给1位正整数num加0
+			function add0(num) {
+				if(num < 10) {
+					return "0" + num;
+				} else {
+					return num;
+				}
+			}
+
+			var imgs = document.getElementsByTagName("img");
+			tab()
+			setInterval(tab, 1000)
+
+			function tab() {
+				var now = new Date();
+				var h = add0(now.getHours());
+				var m = add0(now.getMinutes());
+				var s = add0(now.getSeconds());
+
+				var tStr = h + ":" + m + ":" + s;
+				//			console.log(tStr);
+
+				for(var i = 0; i < tStr.length; i++) {
+					//				imgs[i].src = "img/"+tStr[i]+".jpg"
+
+					imgs[i].src = i == 2 || i == 5 ? "img/c.jpg" : "img/" + tStr[i] + ".jpg"
+				}
+			}
+			
+			
+			
+		</script>-->
+	</body>
+
+</html>

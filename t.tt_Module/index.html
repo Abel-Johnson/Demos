@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+		<style type="text/css">
+			*{box-sizing: border-box;font-family: arial;}
+			#box{
+				/*width: ;*/
+				height: 500px;
+				background: yellow;
+				padding: 100px 0;
+				margin: 100px auto;
+				border: 1px solid #ddd;
+			
+				/*核心布局代码*/
+				perspective: 1000px;
+			}
+			#banner{
+				height: 300px;
+				width: 400px;
+				margin: 0 auto;
+				background: #37D7B2;
+				box-shadow: 0 0 15px rgba(0,0,0,0.25);
+				text-align: center;
+				line-height: 300px;
+				font-size: 50px;
+				color: white;
+				
+				/*核心布局代码*/
+				transition: transform 0.1s;;
+			}
+			body{
+				padding: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="banner">
+				banner
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			$('#box').on('mousemove', function(ev) {
+				var offset = $('#box').offset();//元素在当前视口的相对偏移 对象
+				
+				//event.pageX获取光标位置相对于文档边界的距离,与clientX的区别就是:一个是相对于浏览器窗口的距离,另一个是相对于文档的距离,文档的概念参照做滚动条时的理解
+//				ev.pageX
+				
+				//要计算得出鼠标滑动相对于中心的距离,然后通过一定系数计算出旋转角度
+				var x = ev.pageX-offset.left;
+				var y = ev.pageY-offset.top;
+				console.log(x,y);
+				
+				//中点距离容器左边和顶部的距离(长宽的一半)
+				var centerX = $('#box').outerWidth()/2
+				var centerY = $('#box').outerHeight()/2
+					
+				var rateRotateX = (x - centerX)/centerX;
+				var rateRotateY = (y - centerY)/centerY;
+				
+				var n = 10//规定一个系数,换算移动距离到旋转角度
+				
+				var degX = rateRotateX*n+'deg';
+				var degY = -rateRotateY*n+'deg';
+				console.log(degX,degY);
+
+				$('#banner').css('transform','rotateX('+(degY)+') rotateY('+degX+')')
+			})
+			
+			$('#box').on('mouseleave', function(ev) {
+				$('#banner').css('transform','');
+			})
+		</script>
+	</body>
+</html>
