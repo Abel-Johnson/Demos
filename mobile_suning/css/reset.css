@@ -1,0 +1,13 @@
+body,h1,h2,h3,h4,h5,dl,dd,input,select,p,dl,dd,form{margin: 0;}
+img{vertical-align: top;border: 0;}
+input,select{border: 0;border: none;background: none;outline: none;padding: 0;}
+ul,ol{margin: 0;padding: 0;list-style: none;}
+a{text-decoration: none;-webkit-link-}
+
+/*移动端默认样式*/
+input {
+	-webkit-appearance:none;/*去除input默认样式*/
+}
+a{
+	-webkit-tap-highlight-color:transparent;
+}

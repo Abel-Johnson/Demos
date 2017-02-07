@@ -1,0 +1,16 @@
+.wrap{margin: 0 auto;float: left;}
+.fl{float: left;}
+.fr{float: right;}
+.clearfix{
+	*zoom:1;
+}
+.clearfix:after{content: "";display: block;clear: both;}
+body,input{font-family: 'microsoft yahei', Arial, sans-serif;}
+sub{vertical-align: 5px;font-size: 12px;}
+sup{vertical-align: text-bottom;}
+.vb{vertical-align: text-bottom;}
+/*dt{font-weight: bolder;}*/
+.white{color: white;}
+.items_module .noBorder{border-color: white;}
+.noBorder{border: none !important;}
+.noMargin{margin: 0 !important;}
