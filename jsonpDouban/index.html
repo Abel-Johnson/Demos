@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>豆瓣搜索</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<script src="js/jq3.js"></script>
+		<script src="js/template-native.js"></script>
+	</head>
+	<body>
+		<div id="box">
+			<header id="head">
+				<div class='search'>
+					<input class="search-inp" value="从你的全世界路过" placeholder="请输入要搜索的书籍"/>
+					<input type="button" class="search-btn" value="搜索相关书籍"/>
+					<ul id="suggest">
+						<!--<li>建议</li>
+						<li>建议</li>
+						<li>建议</li>
+						<li>建议</li>
+						<li>建议</li>
+						<li>建议</li>-->
+					</ul>
+				</div>
+			</header>
+			<div id="content">
+				<div class="content-loading">正在搜索中...请稍后</div>
+				<div class="content-info">共搜索到<span class="num items_n">1302</span>条,共<span class="num pages_n">651</span>页,当前第<span class="num index">1</span>页</div>
+				<div class="noResult">😭啊哦,没有找到这本书😭</div>
+				<ul class="content-list">
+					<!--<li>
+						<h3 class="li-title">JavaScript</h3>
+						<div class="li-detail">
+							<div class="detail-left">
+								<img class="pic" src="images/ajax_pic.png" />
+							</div>
+							<div class="detail-right">
+								<strong class="writer">作者/出版社克罗克福特...</strong>
+								<p class="intro">图书简介...</p>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3 class="li-title">JavaScript</h3>
+						<div class="li-detail">
+							<div class="detail-left">
+								<img class="pic" src="images/ajax_pic.png" />
+							</div>
+							<div class="detail-right">
+								<strong class="writer">作者/出版社克罗克福特...</strong>
+								<p class="intro">图书简介...</p>
+							</div>
+						</div>
+					</li>-->
+					
+				</ul>
+			</div>
+			<footer id="foot">
+				<div id="pg-box">
+					<a href="javascript:;" class="home">首页</a>
+					<a href="javascript:;" class="prev">上一页</a>
+					<span class="pages">
+						<a href="javascript:;">1</a>
+						<a href="javascript:;">2</a>
+						<a href="javascript:;">3</a>
+						<a href="javascript:;">4</a>
+						<a href="javascript:;">5</a>
+					</span>
+					<a href="javascript:;" class="next">下一页</a>
+					<a href="javascript:;" class="end">尾页</a>
+				</div>
+				<span></span>
+			</footer>
+		</div>
+		
+		<script src="js/index.js"></script>
+	</body>
+</html>
