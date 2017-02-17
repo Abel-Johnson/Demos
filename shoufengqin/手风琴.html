@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+    <style>
+
+      li{
+        list-style: none;
+      }
+      ul,li {
+        padding: 0;
+        margin:0;
+        -transition: .5s;
+      }
+  .fold_wrap{width:1200px;overflow:hidden;margin:0 auto;}
+  .fold_wrap ul{width:1200px;height:260px;margin:0 auto;overflow:hidden;}
+  .fold_wrap  ul li{float:left;width:130px;height:260px;position:relative;overflow:hidden;cursor:pointer;}
+    </style>
+    <script src="jquery-2.2.2.min.js"></script>
+    <script>
+    window.onload = function(){
+      var sm = $("#sm");
+      var lis = sm.find("li");
+
+      //总宽度
+      var totalW = sm.width();
+
+      //一张图片的宽度
+      var imgW = 400;
+
+      //图片的个数
+      var len = lis.size();
+
+      //其余图片要运动的width
+      var otherW = Math.floor((totalW - imgW)/(len-1));
+
+      console.log( otherW );
+
+      //评分总宽度
+      var shareW = Math.floor(totalW/len);
+
+      console.log( shareW );
+
+      /*
+        总宽度 1200
+        六张图片宽度 133
+        七张图片宽度 171
+        展示全的宽度：400
+      */
+
+      //让第一个li的width到400
+
+      lis.width(otherW);
+
+      lis.eq(0).animate({
+        width:imgW
+      });
+
+
+
+      //当鼠标移入到某个元素的时候，如果这个元素的width是小于400的，让这张图片的宽度到400的位置？
+      // 这张图片变化的宽度 = 总宽度 - 其余图片减小宽度的总和
+
+      var timer1,timer2;
+      lis.on("mouseover",function (){
+          clearInterval(timer1);
+          clearInterval(timer2);
+          
+          timer1 = setInterval(()=>{
+            //this指向的是鼠标移入的li
+            var currentW = $(this).width();
+
+            if( currentW < 400 ){//当前li做运动
+              var otherTotalW = 0;
+              lis.each((index,item)=>{
+                //排除鼠标移入的元素
+                if( item !== this ){
+                 
+                   var ow = $(item).width(),speed = 0;
+                  //有一个图片大于了otherW，运动效果
+                  if( ow>otherW ){ //otherW 目标
+
+                    speed = Math.floor((ow - otherW)/6);
+                    //不能让speed为0
+                    speed = speed > 0 ? speed : 1;
+
+                    var otw = ow - speed;
+                    //otherTotalW += otw;  //其余六个减小的总宽度
+
+                     $(item).width(otw);
+                  }
+                  //把其余六张图片的宽度相加
+                  otherTotalW += ow - speed;
+                }
+              });
+              var w = totalW - otherTotalW;
+              if(w > imgW) w = imgW;
+              $(this).css({
+                width:w
+              });
+
+            }else{
+              //如果移入的li的宽度大于等于400，就清除定时器不做运动
+              clearInterval(timer1);
+              clearInterval(timer2);
+            }
+
+            console.log( 123 );
+            
+          },30);
+
+      })
+      .on("mouseout",function (){
+          clearInterval(timer1);
+          clearInterval(timer2);
+          timer2 = setInterval(()=>{
+            var currentW = $(this).width();
+
+            if( currentW > shareW ){  //做运动
+              var otherTotalW = 0;
+              lis.each((index,item)=>{
+                if( item !== this ){
+                  var ow = $(item).width(),speed = 0;
+
+                  if( ow < shareW){
+                    speed = Math.floor((shareW-ow)/6);
+                    speed = speed > 0 ? speed : 1;
+
+                    $(item).width(ow+speed);
+                  }
+
+                  otherTotalW += ow+speed;
+
+
+                }
+              });
+
+              var w = totalW - otherTotalW;
+              $(this).width(w);
+
+            }else{
+
+              clearInterval(timer1);
+              clearInterval(timer2);
+            }
+
+          },30)
+      })
+
+
+    };
+    </script>
+  </head>
+
+  <body>
+      <div class="fold_wrap">
+        <ul class="clearfix" id="sm">
+            <li>
+              <div style="height:100%;background: url(img/1.jpg) no-repeat center 0;"></div>
+            </li>
+            <li>
+
+              <div style="height:100%;background: url(img/2.jpg) no-repeat center 0;"></div>
+            </li>
+            <li>
+              <div style="height:100%;background: url(img/3.jpg) no-repeat center 0;"></div>
+            </li>
+            <li>
+              <div style="height:100%;background: url(img/4.jpg) no-repeat center 0;"></div>
+            </li>
+            <li>
+              <div style="height:100%;background: url(img/5.jpg) no-repeat center 0;"></div>
+            </li>
+            <li>
+              <div style="height:100%;background: url(img/6.jpg) no-repeat center 0;"></div>
+            </li>
+            <li>
+              <div style="height:100%;background: url(img/7.jpg) no-repeat center 0;"></div>
+            </li>
+        </ul>
+      </div>
+
+  </body>
+</html>
