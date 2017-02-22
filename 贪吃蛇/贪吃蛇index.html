@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body {
+				text-align: center;
+			}
+			
+			h1 {
+				font-size: 100px;
+				text-align: center;
+			}
+			
+			#box {
+				/*box-shadow: ;*/
+				width: 2000px;
+				height: 2000px;
+				border: 10px solid navajowhite;
+				/*border: 2px solid floralwhite;*/
+				position: relative;
+				margin: 60px auto;
+			}
+			
+			#box .small_div {
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				border: 1px solid floralwhite;
+				box-sizing: border-box;
+			}
+			
+			.food {
+				background: green;
+				border-radius: 50% !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>贪吃蛇</h1>
+
+		<input type="button" value="开始游戏" id="startBtn" />
+
+		<div id="box">
+			<div></div>
+		</div>
+
+		<script type="text/javascript">
+			var startBtn = document.getElementById("startBtn");
+			var record = [];
+			gameStart()
+			startBtn.onclick = gameStart;
+
+			function gameStart() {
+
+				var box = document.getElementById("box");
+				var str = "";
+				//1.做地图
+				for(var i = 0; i < 20; i++) {
+					for(var j = 0; j < 20; j++) {
+						//					str += '<div class="small_div" style = "top:' + i * 100 + 'px;left:' + j * 100 + 'px">' + (i * 20 + j) + '</div>'
+						str += '<div class="small_div" style = "top:' + i * 100 + 'px;left:' + j * 100 + 'px"></div>'
+					}
+				}
+
+				function getGrade() {
+					alert("成绩：" + posArr.length);
+				}
+				box.innerHTML = str;
+				var divs = document.getElementsByClassName("small_div");
+
+				//2.做蛇
+
+				//			var posArr = [0, 1, 2, 3, 4, 5];
+				//			var posArr = [0,1,2];
+				var posArr = [180, 181, 182];
+				getSnake();
+				//++做食物···········
+				var random = 0;
+				var randomRes = [];
+				getFood()
+
+				function getFood() {
+					randomRes = [];
+					for(var i = 0; i < divs.length; i++) {
+						randomRes.push(i);
+
+					}
+
+					for(var j = 0; j < posArr.length; j++) {
+						var num = randomRes.indexOf(posArr[j])
+						randomRes.splice(num, 1);
+					}
+					console.log(randomRes);
+
+					random = randomRes[Math.floor(Math.random() * (randomRes.length))];
+					console.log(random);
+					divs[random].className = "small_div food";
+
+				}
+
+				var timer = null;
+
+				var direction = 1;
+				//			var record = [];
+
+				document.onkeydown = function(ev) {
+
+					//				console.log(ev);
+					switch(ev.keyCode) {
+						case 39:
+							if(direction != 3) {
+								clearInterval(timer);
+								timer = setInterval(rightMove, 150);
+								//rightMove();
+								direction = 1;
+							}
+							break;
+						case 40:
+							if(direction != 4) {
+								clearInterval(timer);
+								timer = setInterval(downMove, 150);
+								//rightMove();
+								direction = 2;
+							}
+							break;
+						case 37:
+							if(direction != 1) {
+								clearInterval(timer);
+								timer = setInterval(leftMove, 150);
+								//rightMove();
+								direction = 3;
+							}
+							break;
+						case 38:
+							if(direction != 2) {
+								clearInterval(timer);
+								timer = setInterval(upMove, 150);
+								//rightMove();
+								direction = 4;
+							}
+							break;
+
+					}
+
+				}
+
+				function rightMove() {
+					var lastPos = posArr[posArr.length - 1]
+					var firstPos = posArr.shift();
+					posArr.push(++lastPos);
+					if(lastPos % 20 == 0) {
+						record.push(posArr.length);
+						console.log(record);
+						alert("啊哦。。撞墙了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1])
+
+						clearInterval(timer);
+						return;
+					}
+					for(var i = 0; i < posArr.length - 1; i++) {
+						if(posArr[i] == lastPos) {
+							record.push(posArr.length);
+							alert("撞到自己了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1]);
+							clearInterval(timer);
+							return;
+						}
+					}
+
+					console.log(lastPos, random);
+					if(lastPos == random) {
+						divs[random].className = "small_div";
+						getFood();
+						//					posArr.unshift(posArr[0]-1);
+						posArr.unshift(firstPos);
+						console.log(posArr);
+					}
+					getSnake()
+
+				}
+
+				function downMove() {
+					var lastPos = posArr[posArr.length - 1];
+					var firstPos = posArr.shift();
+					posArr.push(lastPos + 20);
+					if((lastPos + 20) >= 400) {
+						record.push(posArr.length);
+						alert("啊哦。。撞墙了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1])
+						clearInterval(timer);
+						return;
+					}
+					for(var i = 0; i < posArr.length - 1; i++) {
+						if(posArr[i] == lastPos + 20) {
+							record.push(posArr.length);
+							alert("撞到自己了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1]);
+							clearInterval(timer);
+							return;
+						}
+					}
+					if((lastPos + 20) == random) {
+						divs[random].className = "small_div";
+						getFood();
+						//					posArr.unshift(posArr[0]-20);
+						posArr.unshift(firstPos);
+						console.log(posArr);
+					}
+					getSnake()
+
+				}
+
+				function leftMove() {
+					var lastPos = posArr[posArr.length - 1]
+					var firstPos = posArr.shift();
+					posArr.push(lastPos - 1);
+					console.log(lastPos - 1);
+					if((lastPos - 0) % 20 == 0) {
+						record.push(posArr.length);
+						alert("啊哦。。撞墙了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1])
+						clearInterval(timer);
+						return;
+					}
+					for(var i = 0; i < posArr.length - 1; i++) {
+						if(posArr[i] == lastPos - 1) {
+							record.push(posArr.length);
+							alert("撞到自己了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1]);
+							clearInterval(timer);
+							return;
+						}
+					}
+					if((lastPos - 1) == random) {
+						divs[random].className = "small_div";
+						getFood();
+						//					posArr.unshift(posArr[0]+1);
+						posArr.unshift(firstPos);
+						console.log(posArr);
+					}
+					getSnake()
+
+				}
+
+				function upMove() {
+					var lastPos = posArr[posArr.length - 1]
+					var firstPos = posArr.shift();
+					posArr.push(lastPos - 20);
+					if(lastPos < 20) {
+						record.push(posArr.length);
+						alert("啊哦。。撞墙了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1])
+						clearInterval(timer);
+						return;
+					}
+					for(var i = 0; i < posArr.length - 1; i++) {
+						if(posArr[i] == lastPos - 20) {
+							record.push(posArr.length);
+							alert("撞到自己了😭\n成绩：" + posArr.length + "\n历史最好成绩：" + record.sort()[record.length - 1]);
+							clearInterval(timer);
+							return;
+						}
+					}
+					if((lastPos - 20) == random) {
+						divs[random].className = "small_div";
+						getFood();
+						//					posArr.unshift(posArr[0]+20);
+						posArr.unshift(firstPos);
+						console.log(posArr);
+					}
+					getSnake()
+
+				}
+
+				function getSnake() {
+					for(var i = 0; i < divs.length; i++) {
+						divs[i].style.background = "";
+						//					divs[i].style.borderRadius	= "0";
+					}
+					//				getFood();
+					for(var i = 0; i < posArr.length; i++) {
+
+						divs[posArr[i]].style.background = "red";
+						//					divs[posArr[i]].style.borderRadius	= "50%";
+					}
+				}
+
+			}
+		</script>
+	</body>
+
+</html>

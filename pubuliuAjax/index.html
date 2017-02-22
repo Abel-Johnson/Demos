@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>无标题文档</title>
+    <style>
+    #wrap {
+
+        width: 910px;
+        /*border: 1px solid #000;*/
+        margin: 100px auto;
+    }
+    
+    #box {
+    		margin: 0;
+        margin-right: -10px;
+        padding: 0;
+        list-style: none;
+        overflow: hidden;
+    }
+    
+    #box li {
+        width: 220px;
+        float: left;
+        margin-right: 10px;
+    }
+    
+    #box li div {
+        border: 1px solid #000;
+        padding: 10px;
+        width: 198px;
+        margin-bottom: 10px;
+    }
+    
+    #box li img {
+        width: 100%;
+        border: 1px solid #000;
+        box-sizing: border-box;
+        vertical-align: top
+    }
+    #box li span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <ul id="box">
+            <li>
+                <!-- <div>
+                    <img src="http://s2.mogucdn.com/p2/160802/152715465_233ka9l8ebj19blc0657l6i63h4fd_640x960.jpg_240x360.v1cAC.70.webp">
+                    <span>xxxx</span>
+                </div> -->
+            </li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</body>
+<script>
+	function ajax(opt) {
+		var defaultt = {
+			method: 'get',
+			url: '',
+			data: 'cpage=1',
+            success: function(){},
+			error: function(){},
+			Asyn: true
+		}
+		for (var attr in opt) {
+			defaultt[attr] = opt[attr];
+		}
+		var xhr = new XMLHttpRequest();
+
+		xhr.onload = function() {
+			if (xhr.status == 200) {
+				var dt = JSON.parse( xhr.responseText );
+                defaultt.success(dt);
+			}
+		}
+
+		if (defaultt.method == 'get') {
+			xhr.open(defaultt.method,defaultt.url+'?'+defaultt.data,defaultt.Asyn);
+			xhr.send()
+		} else {
+			xhr.open(defaultt.method,defaultt.url,defaultt.Asyn);
+			xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+			xhr.send(defaultt.data);
+		}
+	}
+    function shortLi (lis) {
+        var shortLi = lis[0];
+        for (var i = 1; i < lis.length; i++) {
+            lis[i].offsetHeight < shortLi.offsetHeight && (shortLi = lis[i]);
+        }
+        return shortLi;
+    }       
+	function getDataR (page) {
+        ajax({
+            method: 'post',
+            data: 'cpage='+page,
+            url: 'getPics.php',
+            success: function(data){
+                // console.log(data);
+                if(!data.length) return;
+                for (var i = 0; i < data.length; i++) {
+                    var str = `<div>
+                                    <img _src="${data[i].image}" width="196px" height='${196*data[i].height/data[i].width}px'>
+                                    <span>${data[i].title}</span>
+                                </div>`;
+                    shortLi (lis).innerHTML += str;
+                }
+                lazyImg();
+                loadable = true;
+            },
+        })
+    }
+    function lazyFn(ele, fn) {
+        if (ele.getBoundingClientRect().top+100 < document.documentElement.clientHeight) {
+            fn();
+        }
+    }
+
+    function lazyImg() {
+        for (var i = 0; i < imgs.length; i++) {
+            lazyFn(imgs[i], function () {
+                imgs[i].setAttribute('src', imgs[i].getAttribute('_src'))
+            })
+        }
+    }
+
+    var lis = box.getElementsByTagName('li');
+    var pageNow = 1;
+    var loadable = true;
+    var imgs = box.getElementsByTagName('img');
+
+    getDataR (pageNow);
+    
+    window.onscroll = function () {
+        var stLi = shortLi (lis);
+        
+
+        lazyImg();
+
+
+
+        if (stLi.getBoundingClientRect().bottom+100 < document.documentElement.clientHeight) {
+           if (loadable) {
+                loadable = false;
+                pageNow++;
+                console.log(pageNow)
+                getDataR(pageNow);
+            }
+        }
+    }
+
+
+</script>
+</html>
